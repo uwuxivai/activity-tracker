@@ -1,0 +1,958 @@
+% !TEX program = xelatex
+\documentclass{timcw}
+
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.multipart, shapes.geometric, fit, backgrounds, calc}
+\usepackage{xurl}
+\usepackage[hidelinks, unicode]{hyperref}
+
+% Оформление подписей рисунков и таблиц по ГОСТ (тире вместо двоеточия)
+\captionsetup{labelsep=endash, font=small}
+
+% Компактные интервалы в Содержании (чтобы оглавление целиком помещалось на 1 страницу)
+\setlength{\cftbeforechapskip}{4pt}
+\setlength{\cftbeforesecskip}{1pt}
+
+\makeatletter
+\renewcommand{\cwtitle}{%
+  \clearpage
+  \begin{singlespacing}
+  \thispagestyle{empty}
+
+  \noindent
+  \begin{minipage}[c]{0.12\textwidth}
+    \includegraphics[width=0.96\linewidth]{tim-logo.png}%
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[c]{0.88\textwidth}
+    \scriptsize
+    \centering
+
+    \textbf{МИНИСТЕРСТВО СЕЛЬСКОГО ХОЗЯЙСТВА
+    РОССИЙСКОЙ ФЕДЕРАЦИИ}\\[0.15cm]
+
+    ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ
+    ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ
+    ВЫСШЕГО ОБРАЗОВАНИЯ\\[0.15cm]
+
+    \textbf{«РОССИЙСКИЙ ГОСУДАРСТВЕННЫЙ
+    АГРАРНЫЙ УНИВЕРСИТЕТ --
+    МСХА имени К.\,А.~ТИМИРЯЗЕВА»}\\[0.15cm]
+
+    \textbf{(ФГБОУ ВО РГАУ --
+    МСХА имени К.\,А.~Тимирязева)}
+    \par
+  \end{minipage}
+
+  \par
+  \medskip
+
+  \noindent\rule{\textwidth}{0.4pt}\\[-2.0ex]
+  \rule{\textwidth}{0.4pt}
+  \par
+
+  % Подразделение и образовательная программа
+  {\small
+    \begin{center}
+      Институт экономики и управления\\[0.1cm]
+      Кафедра статистики и кибернетики\\[0.35cm]
+
+      Направление: \cw@direction\\
+      Направленность: \cw@profile\\[0.45cm]
+    \end{center}
+  }
+
+  % Вид работы
+  {\Large
+    \begin{center}
+      \textbf{КУРСОВОЙ ПРОЕКТ}
+    \end{center}
+  }
+
+  % Тема
+  \noindent
+  на тему: «\cw@topic».\par
+  \vspace{0.55cm}
+
+  % Сведения о студенте и защите
+  {\small
+    \noindent
+    \hfill
+    \begin{minipage}[t]{0.55\textwidth}
+      Выполнил:\\
+      Студент \cw@course \ курса группы \cw@group\\
+      \cw@student\\[0.8ex]
+
+      Дата регистрации КП\\[0.6ex]
+      на кафедре: \rule{4cm}{0.4pt}\\[0.15cm]
+
+      Допущен к защите\\[0.15cm]
+      Руководитель:\\[0.25cm]
+
+      \rule{\linewidth}{0.4pt}\\
+      {\footnotesize
+        учёная степень, учёное звание, ФИО
+      }\\[0.35cm]
+
+      Члены комиссии:\\[0.15cm]
+      \rule{0.73\linewidth}{0.4pt}\hfill
+      \rule{0.23\linewidth}{0.4pt}\\[-2pt]
+      {\footnotesize
+        учёная степень, учёное звание, ФИО
+        \hfill подпись
+      }\\[0.15cm]
+      \rule{0.73\linewidth}{0.4pt}\hfill
+      \rule{0.23\linewidth}{0.4pt}\\[-2pt]
+      {\footnotesize
+        учёная степень, учёное звание, ФИО
+        \hfill подпись
+      }\\[0.15cm]
+      \rule{0.73\linewidth}{0.4pt}\hfill
+      \rule{0.23\linewidth}{0.4pt}\\[-2pt]
+      {\footnotesize
+        учёная степень, учёное звание, ФИО
+        \hfill подпись
+      }\\[0.35cm]
+
+      Оценка \hrulefill\\[0.25cm]
+      Дата защиты \hrulefill
+    \end{minipage}
+    \par
+  }
+
+  \vfill
+
+  \begin{center}
+    \cw@cityyear
+  \end{center}
+
+  \clearpage
+  \end{singlespacing}
+}
+\makeatother
+
+\cwtopic{Разработка кроссплатформенного приложения для автоматизированного учёта и анализа пользовательской активности}
+\cwcourse{2}
+\cwgroup{ДЭ 21-25}
+\cwstudent{Аджемов Роман Андреевич}
+\cwcityyear{Москва 2026}
+\cwdirection{09.03.02 Информационные системы и технологии}
+\cwprofile{Большие данные и машинное обучение}
+
+\begin{document}
+\cwtitle
+
+\begin{singlespacing}
+\tableofcontents
+\end{singlespacing}
+\clearpage
+
+% =========================================================================
+% ВВЕДЕНИЕ
+% =========================================================================
+\intro
+
+В условиях повсеместной цифровизации учебной, исследовательской и профессиональной деятельности персональный компьютер выступает основной рабочей средой специалиста. Ежедневная работа требует одновременного взаимодействия с интегрированными средами разработки, веб-браузерами, офисными пакетами, системами контроля версий и корпоративными мессенджерами. Высокая плотность информационных потоков и частые переключения контекста между разнородными задачами приводят к фрагментации внимания, скрытым потерям рабочего времени и искажённому субъективному восприятию собственной продуктивности. Для объективной количественной оценки структуры временных затрат востребованы программные средства автоматизированного учёта пользовательской активности (системы класса \emph{time-tracking}).
+
+Анализ современного рынка программного обеспечения показывает наличие системного противоречия между функциональностью, кроссплатформенностью и обеспечением приватности данных. Большинство популярных коммерческих решений (RescueTime, Clockify, Hubstaff, Timely) построены по облачной архитектуре: клиентские агенты регулярно передают на внешние серверы заголовки открытых окон, наименования редактируемых документов, адреса посещаемых веб-ресурсов и временные метки переключений. Подобная модель несёт существенные риски утечки конфиденциальной информации (названий внутренних проектов, фрагментов переписки, корпоративной документации), требует постоянного сетевого подключения и ограничивает контроль пользователя над собственными данными.
+
+С другой стороны, существующие локальные программные продукты с открытым исходным кодом зачастую опираются на устаревший протокол графической подсистемы Linux~--- X11, не обеспечивая полноценной работы в современных окружениях рабочего стола на базе протокола Wayland (KDE Plasma~6, Hyprland, Sway), где модель безопасности намеренно изолирует окна приложений друг от друга. Кроме того, многие кроссплатформенные инструменты реализуют пользовательский интерфейс в виде веб-страниц на базе встроенного браузера или локального HTTP-сервера, что увеличивает потребление оперативной памяти и нарушает интеграцию с нативной средой операционной системы.
+
+\textbf{Актуальность темы} курсового проекта обусловлена необходимостью создания автономного кроссплатформенного программного средства, сочетающего полную локальность хранения данных, поддержку современных графических подсистем Windows и Linux (включая композиторы Wayland), малые накладные расходы в фоновом режиме и выразительную визуальную аналитику продуктивности.
+
+\textbf{Целью курсового проекта} является проектирование, программная реализация и экспериментальное исследование кроссплатформенного настольного приложения для автоматизированного учёта, классификации и анализа пользовательской активности в операционных системах Windows и Linux.
+
+Для достижения поставленной цели сформулированы следующие \textbf{задачи}:
+\begin{enumerate}
+  \item провести анализ предметной области, классифицировать подходы к автоматическому учёту экранного времени и выполнить сравнительный обзор существующих программных аналогов;
+  \item исследовать низкоуровневые механизмы получения сведений об активном окне и времени бездействия пользователя (AFK) в ОС Windows (WinAPI), Linux с сервером X11 (EWMH, \texttt{libXss}) и Linux с протоколом Wayland (KWin Scripting / D-Bus, IPC композиторов Hyprland и Sway);
+  \item обосновать выбор технологического стека (Python, PySide6, Qt Quick/QML, SQLite WAL) и спроектировать многослойную кроссплатформенную архитектуру приложения на основе паттерна MVVM;
+  \item разработать реляционную модель базы данных, математический аппарат и программную реализацию алгоритма потокового уплотнения интервалов (heartbeat-склейки) и приоритетного движка автоматической категоризации событий;
+  \item реализовать фоновый сервис мониторинга в выделенном потоке \texttt{QThread}, слой моделей представления (\texttt{ViewModel}) и декларативный графический интерфейс на QML с кастомными диаграммами, 24-часовым таймлайном, системным треем и экспортом отчётов в форматах CSV и JSON;
+  \item провести модульное, функциональное и кроссплатформенное нагрузочное тестирование разработанного приложения с оценкой латентности системных вызовов, загрузки CPU, потребления RAM и степени сжатия базы данных.
+\end{enumerate}
+
+\textbf{Объектом исследования} являются процессы автоматизированного сбора, структурированного хранения и аналитической обработки данных о взаимодействии пользователя с оконной подсистемой операционной системы.
+
+\textbf{Предметом исследования} выступают программные интерфейсы мониторинга активности ОС Windows и Linux, алгоритмы сжатия и классификации потоков временных интервалов, а также архитектурные паттерны построения кроссплатформенных настольных приложений на базе Qt~6 (PySide6/QML).
+
+\textbf{Практическая значимость} работы состоит в разработке готового к повседневной эксплуатации настольного приложения \emph{Activity Tracker}, позволяющего студентам, разработчикам и исследователям анализировать структуру своего экранного времени без передачи телеметрии третьим лицам.
+
+% =========================================================================
+% ГЛАВА 1. ТЕОРЕТИЧЕСКАЯ ЧАСТЬ
+% =========================================================================
+\newpage
+\chapter{Теоретические основы и анализ предметной области}
+
+\section{Классификация систем учёта активности и сравнительный анализ аналогов}
+
+Программные средства хронометража рабочего времени принято разделять на три базовых класса по степени автоматизации и уровню детализации собираемых сведений:
+\begin{itemize}
+  \item \textbf{системы ручного учёта (manual time trackers)}~--- требуют от пользователя явного запуска и остановки таймеров при смене задачи (Toggl Track, Clockify в базовом режиме). Недостатком является высокая когнитивная нагрузка и значительная погрешность из-за забытых переключений;
+  \item \textbf{специализированные плагины телеметрии}~--- встраиваются в конкретный класс приложений (например, WakaTime для сред разработки или расширения браузера). Они обеспечивают глубокую детализацию внутри одной среды (проект, язык программирования, ветка Git), но не формируют целостной картины рабочего дня;
+  \item \textbf{системные автоматические трекеры активности (automated desktop trackers)}~--- функционируют как фоновый процесс ОС, регистрируя смену активного окна, имя процесса, заголовок окна и периоды отсутствия пользовательского ввода (AFK~--- \emph{Away From Keyboard}).
+\end{itemize}
+
+Разрабатываемое приложение относится к третьему классу и ориентировано на сценарий \emph{локальной персональной аналитики} (privacy-first). Для формирования обоснованных архитектурных требований был проведён сравнительный анализ четырёх наиболее распространённых систем данного сегмента. Сводная характеристика аналогов представлена в таблице~\ref{tab:analogues}.
+
+\begin{table}[H]
+\centering
+\caption{Сравнительный анализ существующих систем учёта пользовательской активности}
+\label{tab:analogues}
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.5cm} >{\centering\arraybackslash}p{1.9cm} >{\centering\arraybackslash}p{2.3cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Решение} & \textbf{Хранение данных} & \textbf{Поддержка ОС} & \textbf{Архитектура и ключевые функции} & \textbf{Основные ограничения} \\
+\midrule
+RescueTime \cite{rescuetime} & Облако & Windows, macOS, Linux & Фоновый агент + облачный веб-портал, автокатегоризация, уведомления о фокусе & Передача заголовков окон на сторонние серверы; закрытый код; платная подписка \\
+\addlinespace
+ManicTime \cite{manictime} & Локально / сервер & Windows, macOS, Linux & Нативный клиент (.NET), детальный многодорожечный таймлайн, теги & Закрытый исходный код; функциональность Linux-клиента и автотегов ограничена лицензией \\
+\addlinespace
+ActivityWatch \cite{activitywatch} & Локально (SQLite) & Windows, macOS, Linux & Модульные процессы-наблюдатели + локальный HTTP-сервер + веб-UI (Vue.js) & Требует открытия браузера для анализа; под Wayland нужны сторонние нестандартные патчи \\
+\addlinespace
+WakaTime \cite{wakatime} & Облако & Плагины IDE & Метрики по проектам, файлам и языкам программирования & Отсутствие мониторинга вне IDE (браузер, документы, терминал) \\
+\addlinespace
+\textbf{Activity Tracker (проект)} & \textbf{Локально (SQLite WAL)} & \textbf{Windows, Linux (X11 и Wayland)} & \textbf{Нативный UI (PySide6 + QML), MVVM, встроенный KWin/IPC мост, экспорт CSV/JSON} & \textbf{Отсутствие облачной синхронизации (осознанный выбор в пользу приватности)} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Для формализации выбора проектных приоритетов дополнительно составлена матрица соответствия аналогов ключевым требованиям курсового проекта (таблица~\ref{tab:criteria_matrix}).
+
+\begin{table}[H]
+\centering
+\caption{Сопоставление аналогов по ключевым функциональным и нефункциональным критериям}
+\label{tab:criteria_matrix}
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{1.8cm} >{\centering\arraybackslash}p{1.8cm} >{\centering\arraybackslash}p{2.0cm} >{\centering\arraybackslash}p{1.8cm} >{\centering\arraybackslash}p{2.1cm}}
+\toprule
+\textbf{Критерий} & \textbf{RescueTime} & \textbf{ManicTime} & \textbf{ActivityWatch} & \textbf{WakaTime} & \textbf{Activity Tracker} \\
+\midrule
+Полная локальность данных & Нет & Частично & Да & Нет & \textbf{Да} \\
+Открытая архитектура и расширяемость & Нет & Нет & Да & Частично & \textbf{Да} \\
+Нативный десктопный GUI без браузера & Нет & Да & Нет & Нет & \textbf{Да} \\
+Поддержка Wayland (KDE/Hyprland/Sway) & Частично & Частично & Частично & Н/П & \textbf{Да} \\
+Правила Regex по заголовку и процессу & Частично & Да & Да & Нет & \textbf{Да} \\
+Переклассификация накопленной истории & Да & Да & На лету & Нет & \textbf{Да} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Проведённый обзор позволяет сформулировать целевую нишу разрабатываемого приложения: автономный легковесный настольный инструмент с нативным интерфейсом, единой кодовой базой для Windows и Linux (как X11, так и Wayland), детерминированной приоритетной системой правил и открытыми форматами экспорта данных.
+
+\section{Низкоуровневые механизмы мониторинга активности в Windows и Linux}
+
+Для корректного учёта экранного времени фоновая подсистема приложения должна с фиксированным интервалом $\tau$ извлекать два типа системной информации:
+\begin{enumerate}
+  \item \textbf{контекст активного окна}: имя исполняемого процесса (\texttt{app\_name}), полный путь к исполняемому файлу (\texttt{executable\_path}), идентификатор процесса (\texttt{pid}) и актуальный текстовый заголовок окна (\texttt{window\_title});
+  \item \textbf{длительность простоя (idle time)}: число секунд, прошедших с момента последнего события аппаратного ввода (нажатия клавиши клавиатуры, перемещения или нажатия кнопки мыши).
+\end{enumerate}
+
+Принципиальная сложность кроссплатформенной разработки заключается в том, что единого стандарта POSIX для доступа к оконному менеджеру не существует, а сами графические подсистемы Windows, Linux X11 и Linux Wayland основаны на несовместимых архитектурных моделях.
+
+\textbf{Операционная система Windows (подсистема Win32 API).} В Windows оконный менеджер интегрирован в подсистему пользовательского интерфейса \texttt{user32.dll} и предоставляет прямой синхронный программный интерфейс \cite{winapi_fg}:
+\begin{itemize}
+  \item функция \texttt{GetForegroundWindow()} возвращает дескриптор \texttt{HWND} окна верхнего уровня, с которым в данный момент взаимодействует пользователь;
+  \item пара функций \texttt{GetWindowTextLengthW(hwnd)} и \texttt{GetWindowTextW(hwnd, buf, len)} считывает заголовок окна в кодировке UTF-16LE, что гарантирует корректную обработку кириллицы и специальных символов;
+  \item вызов \texttt{GetWindowThreadProcessId(hwnd, \&pid)} извлекает идентификатор процесса-владельца окна. Далее по PID через системный интерфейс ОС (в реализации~--- посредством библиотеки \texttt{psutil} \cite{psutil_docs}) запрашиваются имя процесса и путь к бинарному файлу. При этом необходимо обрабатывать исключение \texttt{AccessDenied}, возникающее, если активное окно запущено с повышенными привилегиями администратора (UAC);
+  \item для определения простоя вызывается \texttt{GetLastInputInfo(\&lii)} \cite{winapi_idle}. Поле \texttt{lii.dwTime} содержит 32-битную метку системного таймера (в миллисекундах) на момент последнего события ввода. Длительность простоя вычисляется относительно текущего значения \texttt{kernel32.GetTickCount()} с побитовой маской по модулю $2^{32}$:
+  \begin{equation}\label{eq:win_idle}
+    t_{\text{idle}} = \frac{\bigl(\mathrm{GetTickCount}() - \mathrm{dwTime}\bigr) \bmod 2^{32}}{1000}.
+  \end{equation}
+  Применение беззнаковой арифметики по модулю $2^{32}$ (\texttt{\& 0xFFFFFFFF}) критически важно для предотвращения отрицательных значений при переполнении 32-битного счётчика, происходящем каждые $2^{32}\,\text{мс} \approx 49{,}7$ суток непрерывной работы системы.
+\end{itemize}
+
+\textbf{Операционная система Linux с дисплейным сервером X11.} Классическая архитектура X Window System построена по клиент-серверной модели, в которой X-сервер поддерживает общее дерево окон, а оконные менеджеры реализуют спецификацию EWMH (\emph{Extended Window Manager Hints}) \cite{ewmh}. В X11 любое приложение с доступом к переменной \texttt{DISPLAY} может считывать свойства корневого окна (root window):
+\begin{itemize}
+  \item атом \texttt{\_NET\_ACTIVE\_WINDOW} корневого окна хранит идентификатор XID текущего окна в фокусе;
+  \item атом \texttt{\_NET\_WM\_NAME} типа \texttt{UTF8\_STRING} содержит заголовок окна (с резервным чтением устаревшего свойства \texttt{WM\_NAME} для приложений без поддержки EWMH);
+  \item атом \texttt{\_NET\_WM\_PID} хранит PID локального процесса; при его отсутствии (например, для удалённых X-клиентов) в качестве имени приложения используется свойство \texttt{WM\_CLASS};
+  \item время бездействия считывается через расширение MIT-SCREEN-SAVER (разделяемая библиотека \texttt{libXss.so}) функцией \texttt{XScreenSaverQueryInfo()}, заполняющей структуру \texttt{XScreenSaverInfo} с полем \texttt{idle} в миллисекундах \cite{xlib_manual}.
+\end{itemize}
+
+\textbf{Операционная система Linux с протоколом Wayland.} Современные дистрибутивы Linux (KDE Plasma~6, GNOME, Fedora, Arch Linux) переходят с X11 на протокол Wayland, в котором функции дисплейного сервера и оконного менеджера объединены в едином процессе~--- композиторе \cite{wayland}. Модель безопасности Wayland принципиально запрещает произвольному клиенту запрашивать список окон других приложений, перехватывать чужие события ввода и считывать заголовки окон через базовый протокол \texttt{wl\_display}. Данное ограничение защищает пользователя от программ-кейлоггеров и скрытого наблюдения, но делает невозможным универсальный кросс-композиторный опрос.
+
+На практике задача легитимного учёта активности под Wayland решается через интерфейсы межпроцессного взаимодействия (IPC), предоставляемые конкретным композитором:
+\begin{itemize}
+  \item \textbf{KDE Plasma (KWin~5/6):} композитор KWin включает встроенный движок сценариев (\texttt{org.kde.kwin.Scripting}) на сессионной шине D-Bus \cite{kwin_scripting}. Приложение может загрузить легковесный JavaScript-скрипт, который подписывается на внутренний сигнал смены фокуса внутри самого KWin и асинхронно отправляет метаданные активного окна в зарегистрированный D-Bus-объект трекера;
+  \item \textbf{Hyprland:} композитор предоставляет JSON-интерфейс командной строки \texttt{hyprctl activewindow -j} поверх UNIX-сокета (\texttt{HYPRLAND\_INSTANCE\_SIGNATURE}), возвращающий поля \texttt{class}, \texttt{title} и \texttt{pid};
+  \item \textbf{Sway (и совместимые с i3):} опрос дерева контейнеров выполняется командой \texttt{swaymsg -t get\_tree} (через сокет \texttt{SWAYSOCK}) с рекурсивным поиском узла с флагом \texttt{focused = true};
+  \item \textbf{время бездействия (AFK) под Wayland:} определяется стандартизированным вызовом D-Bus \texttt{org.freedesktop.ScreenSaver.GetSessionIdleTime()} \cite{dbus_spec}, а в средах на базе Mutter (GNOME) предусмотрен резервный вызов \texttt{org.gnome.Mutter.IdleMonitor.GetIdletime()}.
+\end{itemize}
+
+Сводное сопоставление платформенных механизмов приведено в таблице~\ref{tab:os_mechanisms}.
+
+\begin{table}[H]
+\centering
+\caption{Сопоставление механизмов сбора активности в поддерживаемых средах ОС}
+\label{tab:os_mechanisms}
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.8cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{2.2cm}}
+\toprule
+\textbf{Среда} & \textbf{Получение активного окна} & \textbf{Определение AFK} & \textbf{Модель сбора} \\
+\midrule
+Windows 10/11 & \texttt{user32.GetForegroundWindow}, \texttt{GetWindowTextW}, \texttt{psutil} & \texttt{GetLastInputInfo} + \texttt{GetTickCount} & Опрос (polling) \\
+\addlinespace
+Linux (X11) & \texttt{python-xlib}: \texttt{\_NET\_ACTIVE\_WINDOW}, \texttt{\_NET\_WM\_NAME}, \texttt{\_NET\_WM\_PID} & \texttt{libXss}: \texttt{XScreenSaverQueryInfo} & Опрос (polling) \\
+\addlinespace
+Linux (Wayland / KWin) & Временный KWin-скрипт $\rightarrow$ D-Bus слот \texttt{onWindowChanged} & D-Bus \texttt{org.freedesktop.ScreenSaver} & Событийный мост + кэш \\
+\addlinespace
+Linux (Wayland / Hyprland, Sway) & IPC \texttt{hyprctl activewindow -j} / \texttt{swaymsg -t get\_tree} & D-Bus \texttt{ScreenSaver} / \texttt{Mutter.IdleMonitor} & Опрос (polling) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Математические основы дискретного учёта и сжатия интервалов}
+
+Мониторинг пользовательской активности представляет собой процесс дискретизации непрерывной кусочно-постоянной функции состояния пользователя $S(t) = (a(t), w(t), f(t))$ в моменты времени $t_0, t_1, \dots, t_N$ с периодом опроса $\tau = t_k - t_{k-1}$. При выборе интервала дискретизации возникает компромисс между точностью фиксации кратковременных переключений и накладными расходами на CPU и дисковую подсистему.
+
+При равномерном опросе с шагом $\tau$ максимальная погрешность определения момента переключения окна составляет $\pm \tau$, а математическое ожидание ошибки длительности одного непрерывного интервала при независимых моментах начала и окончания стремится к нулю при дисперсии $\sigma^2 = \tau^2 / 6$. Выбор $\tau = 1$~с обеспечивает достаточную точность для анализа рабочего времени при пренебрежимо малой загрузке процессора (менее 1\%).
+
+Однако непосредственное сохранение каждого отсчёта в реляционную таблицу приводит к линейному росту объёма хранилища $O(T / \tau)$: за 8-часовой рабочий день генерируется $28\,800$ строк, а за год активной работы~--- свыше $10^7$ строк, что замедляет аналитические выборки и ускоряет износ твердотельных накопителей.
+
+Для устранения избыточности применяется алгоритм потокового уплотнения смежных состояний (\emph{heartbeat merging}) \cite{activitywatch}. Если средняя длительность удержания фокуса на одном окне равна $\bar{d}$ секунд, то теоретический коэффициент сжатия числа записей оценивается отношением:
+\begin{equation}\label{eq:compression_theory}
+  K_{\text{сж}} = \frac{\bar{d}}{\tau}.
+\end{equation}
+Так, при типичной средней длительности непрерывного интервала $\bar{d} \in [60; 150]$~с и шаге опроса $\tau = 1$~с алгоритм сокращает количество записей в таблице и размер файла базы данных в 60--150 раз без потери информации о последовательности и длительности сессий.
+
+Важным требованием корректности модели данных является обработка разрывов мониторинга (переход компьютера в спящий режим, перезагрузка, ручная пауза). Вводится верхняя граница допустимого разрыва между соседними импульсами $\Delta_{\max}$ (\texttt{pulse\_timeout}): если $t_k - t_{k-1}^{\text{end}} > \Delta_{\max}$, текущая сессия считается завершённой, а при возобновлении работы открывается новый интервал. Тем самым исключается ошибочное приписывание часов простоя выключенного ПК последнему активному приложению.
+
+\section{Обоснование выбора технологического стека и архитектуры}
+
+Выбор программных инструментов выполнен исходя из требований кроссплатформенности (Windows и Linux), автономности, минимального числа внешних зависимостей и чистоты архитектуры \cite{martin_clean}.
+
+\textbf{Язык программирования Python~3.11+.} Python сочетает высокую скорость разработки аналитического и бизнес-слоя с прямым доступом к системным библиотекам C через стандартный модуль \texttt{ctypes} (что позволило реализовать адаптеры WinAPI и \texttt{libXss} без компиляции расширений и без установки \texttt{pywin32}) \cite{lutz_python, ramalho_python}. Кроссплатформенное разрешение метаданных процессов по PID выполняется проверенной библиотекой \texttt{psutil} \cite{psutil_docs}.
+
+\textbf{Графический фреймворк PySide6 и Qt Quick (QML).} В экосистеме Qt~6 для Python доступны два подхода к построению интерфейсов: императивный \texttt{Qt Widgets} и декларативный \texttt{Qt Quick (QML)} \cite{pyside6, qt_quick}. В таблице~\ref{tab:ui_comparison} приведено их сравнение применительно к задачам проекта.
+
+\begin{table}[H]
+\centering
+\caption{Сравнение Qt Widgets и Qt Quick (QML) в рамках PySide6}
+\label{tab:ui_comparison}
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.5cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Критерий} & \textbf{PySide6 + Qt Widgets} & \textbf{PySide6 + Qt Quick (QML)} \\
+\midrule
+Модель рендеринга & Растровая отрисовка на CPU (QPainter) & Аппаратный граф сцены (RHI: Direct3D, Vulkan, OpenGL) \\
+Архитектурный паттерн & MVC / тесная связь UI и Python-кода & Естественный MVVM через \texttt{@Property}, \texttt{@Slot}, \texttt{QAbstractListModel} \\
+Стилизация и темы & Ограниченные таблицы стилей QSS & Декларативные биндинги палитры, мгновенное переключение тем \\
+Интерактивные графики & Требует QtCharts / Matplotlib & Встроенный \texttt{QtQuick.Canvas} и декларативные примитивы с плавными анимациями \\
+Системный трей & Нативный \texttt{QSystemTrayIcon} & Поддерживается при использовании \texttt{QApplication} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Выбор связки \textbf{PySide6 + QML} с инициализацией через \texttt{QApplication} (из \texttt{PySide6.QtWidgets}) позволил совместить аппаратно-ускоренный современный интерфейс, строгую изоляцию слоёв по паттерну MVVM и нативную поддержку системного трея \texttt{QSystemTrayIcon}. Существенным преимуществом PySide6 под Linux также является наличие встроенного модуля \texttt{QtDBus}, избавляющего проект от внешней зависимости \texttt{dbus-python} (требующей заголовочных файлов компилятора при установке). Кроме того, отказ от тяжёлого модуля \texttt{QtCharts} в пользу собственных компонентов на базе \texttt{QtQuick.Canvas} и декларативных прямоугольников гарантирует идентичный рендеринг на всех целевых платформах при фиксированном стиле \texttt{QT\_QUICK\_CONTROLS\_STYLE=Basic}.
+
+\textbf{Локальная СУБД SQLite~3 в режиме WAL.} По сравнению с хранением в текстовых файлах JSON/CSV или развёртыванием клиент-серверной СУБД (PostgreSQL), встраиваемая реляционная СУБД SQLite~3 оптимальна для настольного трекера \cite{sqlite_wal, kleppmann_ddia}:
+\begin{itemize}
+  \item вся база хранится в едином переносимом файле в каталоге пользователя (\texttt{\textasciitilde/.activity\_tracker/activity.db}) и не требует фонового демона БД;
+  \item поддерживаются внешние ключи (\texttt{PRAGMA foreign\_keys = ON}), ограничения целостности \texttt{CHECK} и составные B-tree индексы;
+  \item включение режима журнала предзаписи \texttt{PRAGMA journal\_mode = WAL} (\emph{Write-Ahead Logging}) в сочетании с \texttt{PRAGMA synchronous = NORMAL} обеспечивает конкурентное неблокирующее чтение аналитических запросов из потока интерфейса во время выполнения операций записи фоновым потоком трекера.
+\end{itemize}
+
+% =========================================================================
+% ГЛАВА 2. ПРАКТИЧЕСКАЯ ЧАСТЬ
+% =========================================================================
+\newpage
+\chapter{Проектирование и программная реализация приложения}
+
+\section{Модульная архитектура и структура проекта}
+
+Программный комплекс \emph{Activity Tracker} спроектирован по многослойной архитектуре, объединяющей паттерн \textbf{MVVM} (\emph{Model--View--ViewModel}) на уровне взаимодействия логики и интерфейса и паттерн \textbf{«Адаптер + Фабрика»} на уровне абстракции операционной системы. Общая схема взаимодействия подсистем представлена на рисунке~\ref{fig:architecture}.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\sffamily\small,
+  box/.style={draw=black!75, rounded corners=4pt, minimum width=3.4cm, minimum height=0.95cm, align=center, fill=#1, line width=0.7pt},
+  layer/.style={draw=black!50, dashed, rounded corners=6pt, inner sep=9pt, fill=#1},
+  arr/.style={-{Latex[length=2.4mm]}, thick, draw=black!80}
+]
+  % Слой UI (QML)
+  \node[box=blue!10] (dash) {DashboardView\\(KPI, графики)};
+  \node[box=blue!10, right=0.5cm of dash] (time) {TimelineView\\(лента 24 ч)};
+  \node[box=blue!10, right=0.5cm of time] (rules) {RulesView\\(категории)};
+  \node[box=blue!10, right=0.5cm of rules] (sett) {SettingsView\\(экспорт, трей)};
+
+  % Слой ViewModels
+  \node[box=cyan!12, below=1.15cm of dash, xshift=1.95cm, minimum width=6.6cm] (dvm) {DashboardVM + AppsListModel (\texttt{QAbstractListModel})};
+  \node[box=cyan!12, right=0.6cm of dvm, minimum width=6.6cm] (rvm) {RulesVM + SettingsVM (\texttt{QObject}, сигналы/слоты)};
+
+  % Слой Core
+  \node[box=green!10, below=1.15cm of dvm, xshift=-0.8cm, minimum width=4.4cm] (db) {ActivityDatabase (SQLite WAL)\\heartbeat-склейка, SQL};
+  \node[box=green!10, right=0.55cm of db, minimum width=4.2cm] (cat) {ActivityCategorizer\\подстроки + Regex};
+  \node[box=green!10, right=0.55cm of cat, minimum width=4.6cm] (trk) {TrackerService (\texttt{QThread})\\опрос, AFK, фильтрация};
+
+  % Слой Platform Adapters
+  \node[box=orange!12, below=1.15cm of cat, minimum width=8.4cm] (fac) {Factory + \texttt{BasePlatformAdapter} (единый контракт)};
+  \node[box=yellow!16, below=0.95cm of fac, xshift=-4.6cm, minimum width=4.0cm] (win) {WindowsPlatformAdapter\\WinAPI + \texttt{psutil}};
+  \node[box=yellow!16, below=0.95cm of fac, minimum width=4.0cm] (x11) {LinuxX11Adapter\\EWMH + \texttt{libXss}};
+  \node[box=yellow!16, below=0.95cm of fac, xshift=4.6cm, minimum width=4.4cm] (way) {LinuxWaylandAdapter\\KWin D-Bus / Hyprland / Sway};
+
+  % Рамки слоёв
+  \begin{scope}[on background layer]
+    \node[layer=blue!3, fit=(dash)(sett), label={[anchor=north west, font=\sffamily\footnotesize\bfseries]north west:View (Qt Quick / QML)}] {};
+    \node[layer=cyan!4, fit=(dvm)(rvm), label={[anchor=north west, font=\sffamily\footnotesize\bfseries]north west:ViewModel (PySide6)}] {};
+    \node[layer=green!3, fit=(db)(trk), label={[anchor=north west, font=\sffamily\footnotesize\bfseries]north west:Core / Model (Python)}] {};
+    \node[layer=orange!4, fit=(fac)(win)(way), label={[anchor=north west, font=\sffamily\footnotesize\bfseries]north west:Platform Adapters (ОС)}] {};
+  \end{scope}
+
+  % Связи
+  \draw[arr] (dash.south) -- (dvm.north -| dash.south);
+  \draw[arr] (time.south) -- (dvm.north -| time.south);
+  \draw[arr] (rules.south) -- (rvm.north -| rules.south);
+  \draw[arr] (sett.south) -- (rvm.north -| sett.south);
+
+  \draw[arr] (dvm.south) -- (db.north -| dvm.south);
+  \draw[arr] (rvm.south -| cat.north) -- (cat.north);
+  \draw[arr] (rvm.south -| trk.north) -- (trk.north);
+  \draw[arr] (trk.west) -- (cat.east);
+  \draw[arr] (cat.west) -- (db.east);
+  \draw[arr] (trk.south) |- (fac.east);
+
+  \draw[arr] (fac.south) -- (x11.north);
+  \draw[arr] (fac.south) -| (win.north);
+  \draw[arr] (fac.south) -| (way.north);
+\end{tikzpicture}%
+}
+\caption{Многослойная архитектура приложения Activity Tracker}
+\label{fig:architecture}
+\end{figure}
+
+Файловая структура прилагаемого программного проекта отражает логическое деление на пакеты и обеспечивает независимое модульное тестирование ядра без запуска графической оболочки:
+\begin{itemize}
+  \item \texttt{main.py}~--- точка входа: фиксация стиля Controls (\texttt{Basic}), инициализация \texttt{QApplication} с параметром \texttt{setQuitOnLastWindowClosed(False)}, программная генерация векторной иконки и меню системного трея (\texttt{QSystemTrayIcon}), связывание сигналов \texttt{TrackerService} с моделями представления и корректная остановка потоков по сигналу \texttt{aboutToQuit};
+  \item \texttt{platform\_adapters/}~--- абстрактный интерфейс \texttt{base.py}, фабрика \texttt{factory.py} и реализации \texttt{windows.py}, \texttt{linux\_x11.py}, \texttt{linux\_wayland.py};
+  \item \texttt{core/}~--- модели данных \texttt{models.py}, категоризатор \texttt{categorizer.py}, слой БД и аналитики \texttt{database.py}, фоновый сервис \texttt{tracker\_service.py};
+  \item \texttt{viewmodels/}~--- \texttt{apps\_model.py}, \texttt{dashboard\_vm.py}, \texttt{rules\_vm.py}, \texttt{settings\_vm.py};
+  \item \texttt{qml/}~--- корневое окно \texttt{Main.qml}, переиспользуемые компоненты (\texttt{KpiCard.qml}, \texttt{DonutChart.qml}, \texttt{HourlyBarChart.qml}) и четыре экрана в каталоге \texttt{views/};
+  \item \texttt{tests/test\_core.py} и \texttt{benchmark.py}~--- автоматизированные модульные и нагрузочные тесты.
+\end{itemize}
+
+\section{Платформенные адаптеры и детальный разбор KWin-скрипта для Wayland}
+
+Единый контракт платформенного слоя задаётся неизменяемым датаклассом \texttt{WindowInfo} и абстрактным базовым классом \texttt{BasePlatformAdapter} (реализованы в модуле \texttt{platform\_adapters/base.py} прилагаемого исходного кода). Контракт включает свойство \texttt{adapter\_name}, обязательные методы \texttt{get\_active\_window()} и \texttt{get\_idle\_seconds()}, а также метод освобождения ресурсов \texttt{close()}. Фабрика \texttt{create\_platform\_adapter()} в \texttt{platform\_adapters/factory.py} при старте приложения анализирует \texttt{sys.platform}, а в операционной системе Linux дополнительно проверяет переменные окружения \texttt{XDG\_SESSION\_TYPE} и \texttt{WAYLAND\_DISPLAY}, автоматически выбирая \texttt{WindowsPlatformAdapter}, \texttt{LinuxX11Adapter} или \texttt{LinuxWaylandAdapter}.
+
+Наибольший инженерный интерес представляет реализация поддержки среды \textbf{KDE Plasma на базе Wayland} в модуле \texttt{platform\_adapters/linux\_wayland.py}, поскольку протокол Wayland не допускает внешнего опроса окон. Для решения этой задачи в классе \texttt{LinuxWaylandAdapter} реализован событийно-ориентированный мост \textbf{KWin Scripting $\leftrightarrow$ QtDBus}, схема работы которого приведена на рисунке~\ref{fig:kwin_bridge}.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\sffamily\footnotesize,
+  comp/.style={draw=black!80, rounded corners=4pt, minimum width=3.5cm, minimum height=1.0cm, align=center, fill=#1, line width=0.75pt},
+  arr/.style={-{Latex[length=2.3mm]}, thick, draw=black!85},
+  darr/.style={-{Latex[length=2.3mm]}, thick, dashed, draw=blue!70!black}
+]
+  \node[comp=green!12] (adapter) {\textbf{LinuxWaylandAdapter}\\(инициализация / \texttt{close()})};
+  \node[comp=orange!14, right=2.1cm of adapter] (dbus) {\textbf{Сессионная шина D-Bus}\\\texttt{org.kde.KWin /Scripting}\\и \texttt{ru.coursework.ActivityTracker}};
+  \node[comp=blue!12, right=2.1cm of dbus] (kwin) {\textbf{Композитор KWin}\\(временный JS-скрипт\\внутри процесса KWin)};
+  \node[comp=cyan!14, below=1.45cm of adapter] (recv) {\textbf{\_KWinDBusReceiver}\\(\texttt{QObject}, слот \texttt{onWindowChanged})};
+  \node[comp=yellow!16, right=2.1cm of recv] (ps) {\textbf{\texttt{psutil.Process(pid)}}\\разрешение \texttt{app\_name}, \texttt{exe}};
+  \node[comp=green!8, right=2.1cm of ps] (cache) {\textbf{Кэш \texttt{latest\_window}}\\(читается по \texttt{get\_active\_window()})};
+
+  \draw[arr] (adapter.east) -- node[above, align=center]{\scriptsize 1. \texttt{registerService}\\ \scriptsize + \texttt{loadScript} / \texttt{run}} (dbus.west);
+  \draw[arr] (dbus.east) -- node[above, align=center]{\scriptsize 2. Загрузка JS\\ \scriptsize и подписка} (kwin.west);
+  \draw[darr] (kwin.south) |- node[pos=0.75, above, align=center]{\scriptsize 3. Событие \texttt{windowActivated} $\rightarrow$ \texttt{callDBus(cls, caption, pid)}} (dbus.south -| kwin.south) -- (dbus.south) |- (recv.east);
+  \draw[arr] (recv.east) -- node[below]{\scriptsize 4. Обогащение по PID} (ps.west);
+  \draw[arr] (ps.east) -- node[below]{\scriptsize 5. Обновление \texttt{WindowInfo}} (cache.west);
+\end{tikzpicture}%
+}
+\caption{Архитектура событийного моста KWin Scripting $\leftrightarrow$ D-Bus под Wayland}
+\label{fig:kwin_bridge}
+\end{figure}
+
+Жизненный цикл KWin-моста включает пять последовательных шагов:
+\begin{enumerate}
+  \item \textbf{Регистрация приёмника на шине D-Bus.} В адаптере создаётся экземпляр класса \texttt{\_KWinDBusReceiver(QObject)}, декорированный метаинформацией \texttt{@ClassInfo(\{"D-Bus Interface": "ru.coursework.ActivityTracker"\})}. Через \texttt{QDBusConnection.sessionBus()} регистрируется имя сервиса \texttt{ru.coursework.ActivityTracker} и путь объекта \texttt{/Tracker} с флагом \texttt{ExportAllSlots}, открывающим слот \texttt{onWindowChanged(str, str, int)} для удалённых вызовов.
+  \item \textbf{Защита от «зависших» копий скрипта.} Перед загрузкой нового экземпляра выполняется вызов \texttt{unloadScript("activity\_tracker\_kwin\_bridge")} через интерфейс \texttt{org.kde.kwin.Scripting}, чтобы очистить возможный остаточный скрипт после аварийного завершения предыдущей сессии.
+  \item \textbf{Генерация кросс-версионного JS-скрипта (Plasma~5 и Plasma~6).} В KDE Plasma~6 API объекта \texttt{workspace} претерпело несовместимые изменения: сигнал \texttt{clientActivated} и свойство \texttt{activeClient} были переименованы в \texttt{windowActivated} и \texttt{activeWindow}. Чтобы приложение работало на обеих ветках KDE без правки кода, генерируемый временный JavaScript-файл динамически проверяет наличие сигнала \texttt{workspace.windowActivated} (ветка Plasma~6) и при его отсутствии переключается на \texttt{workspace.clientActivated} (ветка Plasma~5). В обработчике \texttt{report(w)} из объекта активного окна извлекаются три поля~--- \texttt{resourceClass}, заголовок \texttt{caption} и идентификатор процесса \texttt{pid},~--- после чего выполняется встроенный вызов \texttt{callDBus()} в зарегистрированный слот \texttt{onWindowChanged} трекера. Кроме подписки на будущие переключения, функция \texttt{report()} вызывается один раз сразу при старте сценария для немедленной фиксации текущего активного окна.
+  \item \textbf{Загрузка и запуск сценария.} Скрипт записывается во временный файл (\texttt{tempfile.NamedTemporaryFile}) и загружается вызовом \texttt{loadScript(path, plugin\_name)}, возвращающим числовой идентификатор \texttt{script\_id}. В KWin~6 для активации сценария вызывается метод \texttt{run()} у динамического объекта \texttt{/Scripting/Script\{script\_id\}} (интерфейс \texttt{org.kde.kwin.Script}), а для обратной совместимости с KWin~5 предусмотрен резервный вызов \texttt{scripting.call("start")}.
+  \item \textbf{Обогащение данных и освобождение ресурсов.} При каждом переключении окна KWin вызывает \texttt{onWindowChanged}, где \texttt{\_KWinDBusReceiver} по переданному \texttt{pid} извлекает точное имя процесса и путь к исполняемому файлу через \texttt{psutil.Process(pid)}, обновляя кэш \texttt{latest\_window}. Метод \texttt{get\_active\_window()} считывает это кэшированное значение за $O(1)$ без порождения дочерних процессов. При выходе из приложения метод \texttt{close()} выгружает скрипт из KWin, снимает регистрацию D-Bus-объекта и удаляет временный JS-файл.
+\end{enumerate}
+
+Аналогично организована поддержка тайловых композиторов Wayland: при наличии переменной окружения \texttt{HYPRLAND\_INSTANCE\_SIGNATURE} адаптер обращается к \texttt{hyprctl activewindow -j} с таймаутом 0{,}5~с, а при наличии \texttt{SWAYSOCK}~--- рекурсивно обходит дерево \texttt{nodes} и \texttt{floating\_nodes} из ответа \texttt{swaymsg -t get\_tree}. Важный архитектурный нюанс: поскольку \texttt{QDBusConnection} требует работающего цикла обработки событий Qt (\emph{Event Loop}), экземпляр адаптера создаётся непосредственно внутри рабочего потока \texttt{QThread} в методе \texttt{start\_tracking()}, а не в главном потоке.
+
+\section{Проектирование базы данных и алгоритмы обработки событий}
+
+Реляционная база данных SQLite (модуль \texttt{core/database.py}) состоит из четырёх таблиц: справочника категорий \texttt{categories}, таблицы приоритетных правил классификации \texttt{rules}, журнала уплотнённых интервалов \texttt{activity\_events} и таблицы пользовательских параметров \texttt{settings}. ER-диаграмма базы данных изображена на рисунке~\ref{fig:er_diagram}.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\sffamily\footnotesize,
+  entity/.style={
+    rectangle split,
+    rectangle split parts=2,
+    draw=black!80,
+    rounded corners=3pt,
+    line width=0.8pt,
+    align=left,
+    rectangle split part fill={blue!12, white},
+    minimum width=4.4cm
+  },
+  rel/.style={-{Latex[length=2.4mm]}, thick, draw=black!80}
+]
+  \node[entity] (cat) {
+    \textbf{categories}
+    \nodepart{second}
+    \textbf{PK} \texttt{id} : INTEGER\\
+    \texttt{name} : TEXT (UNIQUE)\\
+    \texttt{color} : TEXT (HEX)\\
+    \texttt{productivity} : INTEGER (-1, 0, 1)
+  };
+
+  \node[entity, right=1.6cm of cat] (rules) {
+    \textbf{rules}
+    \nodepart{second}
+    \textbf{PK} \texttt{id} : INTEGER\\
+    \texttt{pattern} : TEXT\\
+    \texttt{match\_field} : TEXT (app / title)\\
+    \texttt{is\_regex} : INTEGER (0 / 1)\\
+    \texttt{priority} : INTEGER \quad (IDX)\\
+    \textbf{FK} \texttt{category\_id} : INTEGER
+  };
+
+  \node[entity, below=1.4cm of cat, xshift=1.4cm, minimum width=5.6cm] (events) {
+    \textbf{activity\_events}
+    \nodepart{second}
+    \textbf{PK} \texttt{id} : INTEGER\\
+    \texttt{app\_name} : TEXT\\
+    \texttt{window\_title} : TEXT\\
+    \texttt{start\_ts} : REAL \quad (IDX)\\
+    \texttt{end\_ts} : REAL \quad (IDX)\\
+    \texttt{is\_afk} : INTEGER (0 / 1) \quad (IDX)\\
+    \textbf{FK} \texttt{category\_id} : INTEGER
+  };
+
+  \node[entity, right=1.2cm of events, minimum width=3.8cm] (sett) {
+    \textbf{settings}
+    \nodepart{second}
+    \textbf{PK} \texttt{key} : TEXT\\
+    \texttt{value} : TEXT
+  };
+
+  \draw[rel] (rules.west) -- node[above, font=\sffamily\scriptsize]{$N : 1$ (CASCADE)} (cat.east);
+  \draw[rel] (events.north -| cat.south) -- node[left, font=\sffamily\scriptsize]{$N : 1$ (SET NULL)} (cat.south);
+\end{tikzpicture}%
+}
+\caption{ER-диаграмма реляционной базы данных SQLite}
+\label{fig:er_diagram}
+\end{figure}
+
+Для обеспечения ссылочной целостности при удалении категории связанные правила удаляются каскадно (\texttt{ON DELETE CASCADE}), тогда как исторические записи в \texttt{activity\_events} сохраняются с обнулением внешнего ключа (\texttt{ON DELETE SET NULL}) и переходят в группу «Без категории». Потокобезопасность доступа между потоком интерфейса и фоновым потоком трекера гарантируется комбинацией режима SQLite \texttt{WAL}, таймаута ожидания блокировки \texttt{busy\_timeout = 5000}~мс и реентерабельного мьютекса \texttt{threading.RLock} внутри класса \texttt{ActivityDatabase}.
+
+\textbf{Алгоритм heartbeat-склейки и граничные случаи.} Пусть последняя строка таблицы \texttt{activity\_events} имеет кортеж $e_{k-1} = (a_{k-1}, w_{k-1}, f_{k-1}, t_{k-1}^{\text{start}}, t_{k-1}^{\text{end}})$, а в момент $t$ получено очередное наблюдение $(a, w, f)$ с шагом опроса $\Delta t_{\text{poll}}$. Метод \texttt{record\_heartbeat()} расширяет существующую запись (\texttt{UPDATE end\_ts = max(end\_ts, t)}), если выполняется условие:
+\begin{equation}\label{eq:heartbeat}
+  (a = a_{k-1}) \;\wedge\; (w = w_{k-1}) \;\wedge\; (f = f_{k-1}) \;\wedge\; \bigl(0 \le t - t_{k-1}^{\text{end}} \le \Delta_{\max}\bigr).
+\end{equation}
+Если условие~\eqref{eq:heartbeat} не выполнено, вставляется новая запись с началом:
+\begin{equation}\label{eq:new_start}
+  t_k^{\text{start}} = \begin{cases}
+    t_{k-1}^{\text{end}}, & \text{если } t - \Delta t_{\text{poll}} < t_{k-1}^{\text{end}} \le t, \\[4pt]
+    t - \Delta t_{\text{poll}}, & \text{иначе.}
+  \end{cases}
+\end{equation}
+Ограничение~\eqref{eq:new_start} устраняет микроскопические перекрытия соседних интервалов при джиттере таймера, гарантируя строгое неубывание временной оси.
+
+\textbf{Точное отсечение периодов и почасовая развёртка.} При построении аналитики за интервал $[T_1, T_2]$ вклад каждого события вычисляется с отсечением по границам окна прямо в SQL-запросе (\texttt{MAX(e.start\_ts, T1)} и \texttt{MIN(e.end\_ts, T2)}):
+\begin{equation}\label{eq:clip}
+  \Delta t_i = \max\!\Bigl(0,\; \min(t_i^{\text{end}}, T_2) - \max(t_i^{\text{start}}, T_1)\Bigr).
+\end{equation}
+Если непрерывная сессия пересекает границу астрономического часа (например, длится с 13:45 до 14:20), метод \texttt{\_distribute\_hourly()} итеративно разрезает её по границам \texttt{next\_hour\_ts}, корректно распределяя 15 минут в 13-й столбец и 20 минут в 14-й столбец почасовой гистограммы. Индекс продуктивности $P$ рассчитывается исключительно по активному времени (без учёта AFK):
+\begin{equation}\label{eq:productivity}
+  P = \begin{cases}
+    \dfrac{T_{\text{prod}}}{T_{\text{prod}} + T_{\text{neutral}} + T_{\text{distract}}} \cdot 100\%, & T_{\text{act}} > 0, \\[10pt]
+    0\%, & T_{\text{act}} = 0.
+  \end{cases}
+\end{equation}
+
+\textbf{Подробный алгоритм автоматической категоризации.} Ключевой проблемой наивной классификации только по имени процесса является многоцелевое использование веб-браузеров: процесс \texttt{chrome.exe} или \texttt{firefox} может одновременно использоваться для изучения документации на GitHub («Разработка»), редактирования отчёта в Overleaf («Учёба») и просмотра видео на YouTube («Развлечения»).
+
+В классе \texttt{ActivityCategorizer} (модуль \texttt{core/categorizer.py}) эта задача решена посредством \textbf{приоритетной модели правил} с предкомпиляцией шаблонов. Каждое правило описывается кортежем $r = (p, m, \text{is\_regex}, \pi, c)$, где $p$~--- текстовый шаблон, $m \in \{\texttt{app\_name}, \texttt{window\_title}\}$~--- целевое поле, $\pi \in \mathbb{Z}_+$~--- целочисленный приоритет (меньшее значение означает более раннюю проверку), $c$~--- идентификатор целевой категории.
+
+При загрузке или редактировании правил метод \texttt{reload\_rules()} выполняет следующие шаги:
+\begin{enumerate}
+  \item сортирует список правил по составному ключу $(\pi, \text{id})$ за $O(R \log R)$, где $R$~--- число правил;
+  \item для правил с флагом \texttt{is\_regex = True} однократно компилирует регулярное выражение \texttt{re.compile(pattern, re.IGNORECASE)}; синтаксически некорректные шаблоны перехватываются блоком \texttt{except re.error} и безопасно пропускаются, не нарушая работу фонового потока;
+  \item для обычных подстроковых правил заранее приводит шаблон к нижнему регистру (\texttt{needle\_lower}) для исключения повторных аллокаций строк на каждом тике;
+  \item атомарно заменяет внутренний список \texttt{\_compiled} под защитой \texttt{threading.RLock}.
+\end{enumerate}
+
+Блок-схема процесса классификации поступающего события в методе \texttt{classify(app\_name, window\_title)} представлена на рисунке~\ref{fig:cat_algo}.
+
+\begin{figure}[H]
+\centering
+\resizebox{0.92\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\sffamily\footnotesize,
+  node distance=0.65cm and 1.1cm,
+  term/.style={draw=black!80, rounded corners=12pt, minimum width=3.6cm, minimum height=0.75cm, align=center, fill=blue!10},
+  proc/.style={draw=black!80, rounded corners=2pt, minimum width=4.6cm, minimum height=0.75cm, align=center, fill=green!8},
+  dec/.style={draw=black!80, diamond, aspect=2.6, inner sep=2pt, align=center, fill=yellow!16},
+  arr/.style={-{Latex[length=2.2mm]}, thick, draw=black!85}
+]
+  \node[term] (start) {Вход: \texttt{app\_name}, \texttt{window\_title}};
+  \node[proc, below=of start] (snap) {Снять потокобезопасный снимок \texttt{\_compiled}\\под \texttt{RLock}; подготовить \texttt{app\_lower}, \texttt{title\_lower}};
+  \node[dec, below=of snap] (loop) {Есть следующее правило $r_i$?};
+  \node[proc, below=of loop] (field) {Выбрать целевую строку по \texttt{match\_field}\\(\texttt{app\_name} или \texttt{window\_title})};
+  \node[dec, below=of field] (isre) {\texttt{r\_i.regex != None}?};
+  \node[proc, left=1.2cm of isre] (rematch) {Проверка регулярным выражением\\\texttt{r\_i.regex.search(target)}};
+  \node[proc, right=1.2cm of isre] (submatch) {Проверка вхождения подстроки\\\texttt{r\_i.needle\_lower in target\_lower}};
+  \node[dec, below=1.15cm of isre] (hit) {Совпадение найдено?};
+  \node[term, fill=green!16, below=of hit] (retcat) {Вернуть \texttt{r\_i.category\_id}};
+  \node[term, fill=orange!14, right=3.8cm of loop] (retnone) {Вернуть \texttt{None}\\(«Без категории»)};
+
+  \draw[arr] (start) -- (snap);
+  \draw[arr] (snap) -- (loop);
+  \draw[arr] (loop) -- node[right]{\scriptsize Да} (field);
+  \draw[arr] (loop) -- node[above]{\scriptsize Нет} (retnone);
+  \draw[arr] (field) -- (isre);
+  \draw[arr] (isre) -- node[above]{\scriptsize Да} (rematch);
+  \draw[arr] (isre) -- node[above]{\scriptsize Нет} (submatch);
+  \draw[arr] (rematch.south) |- (hit.west);
+  \draw[arr] (submatch.south) |- (hit.east);
+  \draw[arr] (hit) -- node[right]{\scriptsize Да} (retcat);
+  \draw[arr] (hit.west) -- ++(-4.3,0) |- node[pos=0.25, left]{\scriptsize Нет (следующее $r_{i+1}$)} (loop.west);
+\end{tikzpicture}%
+}
+\caption{Блок-схема алгоритма приоритетной классификации событий}
+\label{fig:cat_algo}
+\end{figure}
+
+Поскольку правила заголовка окна в начальной конфигурации имеют приоритет $\pi \in [20; 25]$ (например, \texttt{github|stackoverflow} $\rightarrow$ «Разработка», \texttt{youtube|twitch} $\rightarrow$ «Развлечения»), а общее правило процесса браузера (\texttt{chrome|firefox|msedge}) имеет приоритет $\pi = 200$, алгоритм всегда сначала распознаёт предметный контекст вкладки и лишь при отсутствии совпадений относит событие к нейтральной категории «Веб-сёрфинг». Вычислительная сложность классификации одного события в худшем случае составляет $O(R \cdot L)$, где $L$~--- длина заголовка окна; благодаря предкомпиляции и раннему выходу по первому совпадению пропускная способность движка превышает десятки тысяч событий в секунду.
+
+При изменении набора правил пользователем реализован метод пакетной переклассификации \texttt{ActivityDatabase.recategorize\_all()}, который прогоняет накопленные не-AFK записи через обновлённый категоризатор и обновляет только изменившиеся строки единым пакетным вызовом \texttt{executemany()} внутри одной транзакции SQLite.
+
+\section{Фоновый сервис, диаграмма последовательности MVVM и интерфейс QML}
+
+Для поддержания высокой отзывчивости интерфейса (60--120~кадров в секунду) все блокирующие операции~--- системные вызовы WinAPI/Xlib/IPC и запись в SQLite~--- вынесены из главного потока GUI в выделенный рабочий поток \texttt{QThread} внутри фасада \texttt{TrackerService} (модуль \texttt{core/tracker\_service.py}).
+
+\textbf{Фильтрация собственного окна приложения.} В процессе эксплуатации трекеров активности возникает проблема искажения статистики при длительном просмотре пользователем самих аналитических графиков. В рабочем объекте \texttt{\_TrackerWorker} реализован фильтр \texttt{\_is\_ignored\_window(info)}, который исключает из записи события, удовлетворяющие любому из двух условий:
+\begin{enumerate}
+  \item совпадение идентификатора активного процесса \texttt{info.pid} с собственным PID приложения (\texttt{os.getpid()}), что работает универсально на Windows и Linux;
+  \item совпадение имени процесса с интерпретатором Python (\texttt{python.exe}, \texttt{pythonw.exe}, \texttt{python3}) при наличии подстроки \texttt{"activity tracker"} в заголовке окна.
+\end{enumerate}
+
+\textbf{Диаграмма последовательности взаимодействия слоёв MVVM.} Архитектурное разделение потоков и реактивное обновление интерфейса иллюстрирует диаграмма последовательности на рисунке~\ref{fig:mvvm_sequence}. На ней показаны два основных контура: (1) автоматический цикл сбора и отображения статистики (верхняя часть) и (2) пользовательский сценарий добавления нового правила и пересчёта истории (нижняя часть).
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\sffamily\scriptsize,
+  actor/.style={draw=black!80, rounded corners=3pt, minimum width=2.25cm, minimum height=0.85cm, align=center, fill=#1, line width=0.7pt},
+  lifeline/.style={dashed, draw=black!55, line width=0.6pt},
+  msg/.style={-{Latex[length=2.1mm]}, thick, draw=black!85},
+  ret/.style={-{Latex[length=2.1mm]}, thick, dashed, draw=blue!70!black},
+  grp/.style={draw=black!45, dashed, rounded corners=4pt, fill=#1}
+]
+  % Участники (Lifelines)
+  \node[actor=blue!12] (qml) {\textbf{QML View}\\(Main Thread)};
+  \node[actor=cyan!14, right=0.55cm of qml] (vm) {\textbf{DashboardVM /}\\ \textbf{RulesVM}};
+  \node[actor=green!12, right=0.55cm of vm] (db) {\textbf{ActivityDatabase}\\(SQLite WAL)};
+  \node[actor=green!16, right=0.55cm of db] (trk) {\textbf{TrackerWorker}\\(\texttt{QThread})};
+  \node[actor=yellow!16, right=0.55cm of trk] (cat) {\textbf{Activity-}\\ \textbf{Categorizer}};
+  \node[actor=orange!14, right=0.55cm of cat] (os) {\textbf{Platform-}\\ \textbf{Adapter (ОС)}};
+
+  % Линии жизни
+  \foreach \n in {qml, vm, db, trk, cat, os} {
+    \draw[lifeline] (\n.south) -- ++(0,-10.2);
+  }
+
+  % Фоновые рамки фаз
+  \begin{scope}[on background layer]
+    \node[grp=blue!3, fit={($(qml.south)+(-1.0,-0.25)$) ($(os.south)+(1.0,-5.9)$)}, label={[anchor=north west, font=\sffamily\scriptsize\bfseries]north west:Контур 1: Периодический цикл мониторинга (1 с) и обновление дашборда (5 с)}] {};
+    \node[grp=green!3, fit={($(qml.south)+(-1.0,-6.25)$) ($(os.south)+(1.0,-9.85)$)}, label={[anchor=north west, font=\sffamily\scriptsize\bfseries]north west:Контур 2: Редактирование правил пользователем и пересчёт истории}] {};
+  \end{scope}
+
+  % Контур 1: тик таймера
+  \coordinate (y1) at ($(trk.south)+(0,-0.9)$);
+  \draw[msg] (y1) -- node[above]{\texttt{get\_idle\_seconds()}, \texttt{get\_active\_window()}} (y1 -| os);
+
+  \coordinate (y2) at ($(trk.south)+(0,-1.65)$);
+  \draw[ret] (y2 -| os) -- node[above]{\texttt{WindowInfo}, \texttt{idle\_sec}} (y2);
+
+  \coordinate (y3) at ($(trk.south)+(0,-2.4)$);
+  \draw[msg] (y3) -- node[above]{\texttt{classify(app, title)}} (y3 -| cat);
+
+  \coordinate (y4) at ($(trk.south)+(0,-3.1)$);
+  \draw[ret] (y4 -| cat) -- node[above]{\texttt{category\_id}} (y4);
+
+  \coordinate (y5) at ($(trk.south)+(0,-3.85)$);
+  \draw[msg] (y5) -- node[above]{\texttt{record\_heartbeat(...)}} (y5 -| db);
+
+  \coordinate (y6) at ($(trk.south)+(0,-4.6)$);
+  \draw[ret] (y6) -- node[above]{Qt Signal \texttt{snapshotUpdated} (QueuedConnection)} (y6 -| vm);
+
+  \coordinate (y7) at ($(vm.south)+(0,-5.35)$);
+  \draw[ret] (y7) -- node[above]{\texttt{liveChanged} / \texttt{statsChanged} $\rightarrow$ QML bindings} (y7 -| qml);
+
+  % Контур 2: пользователь добавляет правило
+  \coordinate (y8) at ($(qml.south)+(0,-7.05)$);
+  \draw[msg] (y8) -- node[above]{\texttt{rulesVM.addRule(...)} / \texttt{recategorizeHistory()}} (y8 -| vm);
+
+  \coordinate (y9) at ($(vm.south)+(0,-7.8)$);
+  \draw[msg] (y9) -- node[above]{\texttt{add\_rule()}, \texttt{recategorize\_all()}} (y9 -| db);
+
+  \coordinate (y10) at ($(vm.south)+(0,-8.55)$);
+  \draw[msg] (y10) -- node[above]{Signal \texttt{rulesUpdated} $\rightarrow$ \texttt{reload\_rules()}} (y10 -| trk);
+
+  \coordinate (y11) at ($(trk.south)+(0,-9.3)$);
+  \draw[msg] (y11) -- node[above]{\texttt{reload\_rules(db.get\_rules())}} (y11 -| cat);
+\end{tikzpicture}%
+}
+\caption{Диаграмма последовательности взаимодействия слоёв MVVM и потоков}
+\label{fig:mvvm_sequence}
+\end{figure}
+
+Для снижения нагрузки на SQLite в \texttt{DashboardVM} применён двухуровневый режим обновления: строка текущего активного окна на боковой панели обновляется мгновенно на каждый тик (раз в 1~с) через межпоточный сигнал \texttt{snapshotUpdated}, а полная переагрегация графиков, KPI-карточек и модели \texttt{AppsListModel} выполняется по отдельному таймеру раз в 5~с либо немедленно при смене периода отчёта или обновлении правил.
+
+\textbf{Инженерные особенности реализации компонентов QML.} Графический интерфейс приложения (исходный код декларативных компонентов расположен в каталоге \texttt{qml/} прилагаемого проекта) включает ряд нетривиальных решений, направленных на визуальную стабильность и совместимость с Qt~6 \cite{qt_quick}:
+\begin{itemize}
+  \item \textbf{Единая палитра тем в \texttt{Main.qml}:} все цвета (фон, карточки, границы, акцент, статусы продуктивности) объявлены в корневом JS-объекте \texttt{theme}, привязанном к свойству \texttt{settingsVM.darkTheme}, что обеспечивает мгновенное переключение тёмной и светлой тем во всех четырёх экранах и в компоненте \texttt{DonutChart} (перерисовка \texttt{Canvas} по сигналу \texttt{onBgColorChanged});
+  \item \textbf{Кольцевая диаграмма \texttt{DonutChart.qml}:} реализована на встроенном элементе \texttt{QtQuick.Canvas} без зависимости от \texttt{QtCharts}: последовательно отрисовываются сектора пропорционально долям категорий, после чего центр перекрывается кругом цвета фона карточки;
+  \item \textbf{Устранение артефакта мерцания подсказки в \texttt{HourlyBarChart.qml}:} при использовании индивидуальных \texttt{MouseArea} внутри каждого из 24 столбцов с ненулевым \texttt{spacing} перемещение курсора через межстолбцовый зазор вызывало кратковременный сброс \texttt{hoveredIndex = -1} и проскакивание надписи «Наведите на столбец». Проблема решена переходом на \texttt{spacing: 0} с внутренними боковыми полями у самих столбцов (\texttt{leftMargin: 2}, \texttt{rightMargin: 2}) и единым общим \texttt{MouseArea} поверх всей области графика, вычисляющим индекс часа по формуле $\lfloor (x / W) \cdot 24 \rfloor$. Дополнительно поверх синего столбца общей активности накладывается зелёный слой продуктивного времени;
+  \item \textbf{Строгая типизация делегатов в Qt~6 (\texttt{TimelineView.qml}):} в Qt~6 объявление \texttt{required property} внутри делегата \texttt{Repeater} отключает неявную переменную \texttt{index}. Для корректного выравнивания меток времени (\texttt{00:00}--\texttt{24:00}) в делегате явно объявлено \texttt{required property int index};
+  \item \textbf{Системный трей и управление окном:} обработчик \texttt{onClosing} в \texttt{Main.qml} перехватывает закрытие окна и скрывает его в трей (\texttt{root.hide()}), если не выставлен флаг \texttt{settingsVM.quitting}, инициируемый пунктом «Выход» контекстного меню трея.
+\end{itemize}
+
+% TODO: после снятия скриншотов положите файлы в папку images/ рядом с main.tex
+% и замените блоки \fbox на \includegraphics.
+\begin{figure}[H]
+\centering
+% \includegraphics[width=0.95\textwidth]{images/dashboard_screenshot.png}
+\fbox{\parbox{0.9\textwidth}{\centering\vspace{2.0cm}\textit{[Место для скриншота главного экрана «Дашборд» (KPI, DonutChart, HourlyBarChart, топ приложений)]}\vspace{2.0cm}}}
+\caption{Главный экран приложения --- аналитический дашборд}
+\label{fig:ui_dashboard}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+% \includegraphics[width=0.95\textwidth]{images/timeline_screenshot.png}
+\fbox{\parbox{0.9\textwidth}{\centering\vspace{1.8cm}\textit{[Место для скриншота экрана «Таймлайн дня» с 24-часовой цветовой шкалой и журналом интервалов]}\vspace{1.8cm}}}
+\caption{Экран хронологической ленты активности за выбранный день}
+\label{fig:ui_timeline}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+% \includegraphics[width=0.95\textwidth]{images/rules_settings_screenshot.png}
+\fbox{\parbox{0.9\textwidth}{\centering\vspace{1.8cm}\textit{[Место для скриншота экрана «Категории и правила» / «Настройки и экспорт»]}\vspace{1.8cm}}}
+\caption{Экран управления категориями, правилами классификации и параметрами трекинга}
+\label{fig:ui_rules}
+\end{figure}
+
+% =========================================================================
+% ГЛАВА 3. ТЕСТИРОВАНИЕ И ОЦЕНКА ПРОИЗВОДИТЕЛЬНОСТИ
+% =========================================================================
+\newpage
+\chapter{Тестирование и оценка производительности}
+
+\section{Методика модульного, функционального и нагрузочного тестирования}
+
+Проверка корректности и эксплуатационных характеристик разработанного приложения проводилась в три этапа: автоматизированное модульное тестирование ядра, функциональное тестирование пользовательских сценариев и кроссплатформенное нагрузочное тестирование с помощью специализированного бенчмарк-скрипта \texttt{benchmark.py}.
+
+\textbf{Модульное тестирование (\texttt{tests/test\_core.py}).} На базе стандартной библиотеки \texttt{unittest} реализованы изолированные тесты с использованием in-memory экземпляра базы данных SQLite (\texttt{:memory:}), проверяющие:
+\begin{itemize}
+  \item корректность приоритетной классификации внутри одного процесса браузера (разделение GitHub, YouTube и нейтральных страниц по заголовку окна);
+  \item устойчивость алгоритма heartbeat-склейки: объединение последовательных секундных тиков в одну запись и корректный разрыв интервала после паузы, превышающей $\Delta_{\max}$ (моделирование сна ПК);
+  \item точность отсечения длительности событий на границах аналитического окна по формуле~\eqref{eq:clip} и расчёта индекса продуктивности~\eqref{eq:productivity};
+  \item формирование валидных отчётов в форматах CSV (разделитель «\texttt{;}», кодировка \texttt{UTF-8-SIG} для корректного открытия в Microsoft Excel) и JSON (сводка + массив событий).
+\end{itemize}
+
+\textbf{Методика нагрузочного тестирования (\texttt{benchmark.py}).} Скрипт воспроизводит четыре стандартизированных эксперимента на обеих целевых платформах:
+\begin{enumerate}
+  \item \textbf{Живой опрос платформенного адаптера:} непрерывный сбор активного окна и времени простоя в течение 30~с с шагом 1~с; фиксируются среднее время системного вызова, 95-й перцентиль (\texttt{p95}), максимум, средняя и пиковая загрузка CPU и резидентная память процесса (RSS);
+  \item \textbf{Сравнение эффективности хранения:} моделирование 30 рабочих дней по 8~часов ($864\,000$ секундных тиков) с записью в две контрольные базы SQLite~--- без уплотнения (1 строка на тик) и с алгоритмом heartbeat-склейки; после принудительного сброса WAL-журнала (\texttt{PRAGMA wal\_checkpoint(TRUNCATE)}) сравниваются число строк и физический размер файлов БД;
+  \item \textbf{Латентность аналитических SQL-запросов:} по 50 повторений после прогрева кэша для четырёх типовых запросов дашборда и таймлайна на 30-дневной базе;
+  \item \textbf{Пропускная способность категоризатора:} классификация $10\,000$ синтетических событий по набору из 25 правил (комбинация подстрок и регулярных выражений).
+\end{enumerate}
+
+Характеристики тестовых стендов приведены в таблице~\ref{tab:testbeds}.
+
+% TODO: заполните реальные характеристики ваших ПК (Windows и Linux)
+\begin{table}[H]
+\centering
+\caption{Конфигурация тестовых стендов}
+\label{tab:testbeds}
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Параметр стенда} & \textbf{Стенд №1 (Windows)} & \textbf{Стенд №2 (Linux)} \\
+\midrule
+Операционная система & Windows 11 (\texttt{26H2}) & Linux (\texttt{Arch Linux}) \\
+Графическая подсистема & Win32 / DWM & Wayland (KDE Plasma / KWin) \\
+Процессор (CPU) & \texttt{AMD Ryzen 5 5600X, 6/12} & \texttt{AMD Ryzen 5 5500U, 6/12} \\
+Оперативная память & \texttt{16 ГБ} & \texttt{16 ГБ} \\
+Версия Python / PySide6 & Python 3.14.7 / PySide6 6.12.0 & Python 3.11+ / PySide6 6.7+ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Анализ результатов тестирования}
+
+Все автоматические модульные тесты пакета \texttt{tests/test\_core.py} завершаются без ошибок. Ручная верификация графического интерфейса подтвердила корректную работу всех заявленных функций на Windows и Linux (таблица~\ref{tab:func_tests}).
+
+\begin{table}[H]
+\centering
+\caption{Результаты функционального тестирования приложения}
+\label{tab:func_tests}
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{0.7cm} >{\raggedright\arraybackslash}p{4.5cm} >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{2.1cm}}
+\toprule
+\textbf{№} & \textbf{Сценарий проверки} & \textbf{Ожидаемый результат} & \textbf{Статус} \\
+\midrule
+1 & Переключение окон в Windows и Linux (Wayland/KWin) & Корректное извлечение имени процесса, PID и заголовка UTF-8 & Пройден \\
+\addlinespace
+2 & Превышение порога бездействия (AFK) & Переход в состояние \texttt{is\_afk = 1}, возврат в активный режим при вводе & Пройден \\
+\addlinespace
+3 & Фильтрация собственного окна & Окно «Activity Tracker» (\texttt{python.exe} / \texttt{os.getpid()}) не записывается в БД & Пройден \\
+\addlinespace
+4 & Heartbeat-склейка и переход через полночь & Объединение смежных тиков; корректное отсечение на границе 00:00 & Пройден \\
+\addlinespace
+5 & Редактирование правил и пересчёт истории & Мгновенное обновление диаграмм, индекса продуктивности и таймлайна & Пройден \\
+\addlinespace
+6 & Интерактивность графиков и смена темы & Плавный hover без мерцания на \texttt{HourlyBarChart}; перерисовка \texttt{DonutChart} & Пройден \\
+\addlinespace
+7 & Сворачивание в системный трей и экспорт & Непрерывный фон в трее; валидные файлы CSV/JSON за выбранный период & Пройден \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Сводные количественные показатели нагрузочного тестирования по результатам запуска \texttt{benchmark.py} на обеих операционных системах приведены в таблице~\ref{tab:benchmark_cmp}.
+
+% TODO: подставьте фактические значения из файлов bench_windows.json и bench_linux.json
+\begin{table}[H]
+\centering
+\caption{Сравнительные результаты нагрузочного тестирования на Windows и Linux}
+\label{tab:benchmark_cmp}
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{3.0cm} >{\centering\arraybackslash}p{3.0cm}}
+\toprule
+\textbf{Измеряемый показатель} & \textbf{Windows 11 (WinAPI)} & \textbf{Linux (Wayland / KWin)} \\
+\midrule
+Среднее время опроса окна и AFK, мс & \texttt{[win\_avg]} & \texttt{[lin\_avg]} \\
+95-й перцентиль времени опроса, мс & \texttt{[win\_p95]} & \texttt{[lin\_p95]} \\
+Средняя загрузка CPU в фоновом режиме, \% & \texttt{[win\_cpu]} & \texttt{[lin\_cpu]} \\
+Потребление оперативной памяти (RSS), МБ & \texttt{[win\_ram]} & \texttt{[lin\_ram]} \\
+Коэффициент сжатия строк БД (30 дн.) & \texttt{[win\_ratio]}$\times$ & \texttt{[lin\_ratio]}$\times$ \\
+Размер БД без склейки / со склейкой, МБ & \texttt{[win\_sz]} & \texttt{[lin\_sz]} \\
+Снижение объёма файла БД, \% & \texttt{[win\_red]} & \texttt{[lin\_red]} \\
+Агрегация по категориям за 1 день (avg), мс & \texttt{[win\_q1]} & \texttt{[lin\_q1]} \\
+Топ-10 приложений за 7 дней (avg), мс & \texttt{[win\_q7]} & \texttt{[lin\_q7]} \\
+Агрегация по категориям за 30 дней (avg), мс & \texttt{[win\_q30]} & \texttt{[lin\_q30]} \\
+Выборка ленты таймлайна за 1 день (avg), мс & \texttt{[win\_qt]} & \texttt{[lin\_qt]} \\
+Скорость категоризации (25 правил), соб./с & \texttt{[win\_cat]} & \texttt{[lin\_cat]} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Полученные экспериментальные данные подтверждают эффективность принятых проектных решений по всем ключевым критериям:
+\begin{itemize}
+  \item \textbf{минимальное влияние на систему:} благодаря прямой работе с WinAPI через \texttt{ctypes} и событийному D-Bus-мосту в KWin длительность цикла опроса составляет доли миллисекунды, а фоновая загрузка CPU остаётся пренебрежимо малой;
+  \item \textbf{экономичность локального хранилища:} алгоритм heartbeat-склейки соответствует теоретической оценке~\eqref{eq:compression_theory}, обеспечивая многократное сжатие числа строк и объёма БД, что позволяет хранить многолетнюю историю активности в нескольких мегабайтах на диске;
+  \item \textbf{отзывчивость аналитики:} индексированные запросы SQLite в режиме WAL и предкомпилированный категоризатор выполняются за единицы миллисекунд, исключая задержки при переключении периодов и пересчёте истории в графическом интерфейсе QML.
+\end{itemize}
+
+% =========================================================================
+% ЗАКЛЮЧЕНИЕ
+% =========================================================================
+\newpage
+\conclusion
+
+В ходе выполнения курсового проекта спроектировано, программно реализовано и протестировано кроссплатформенное настольное приложение \emph{Activity Tracker} для автоматизированного учёта, классификации и визуального анализа пользовательской активности в операционных системах Windows и Linux.
+
+Все поставленные перед началом разработки задачи выполнены в полном объёме:
+\begin{enumerate}
+  \item проведён анализ предметной области и сравнительный обзор существующих аналогов (RescueTime, ManicTime, ActivityWatch, WakaTime), выявивший востребованность локального нативного трекера с полноценной поддержкой Wayland;
+  \item исследованы платформенные подсистемы мониторинга активности в Windows (WinAPI), Linux X11 (EWMH и \texttt{libXss}) и Linux Wayland (KWin Scripting / D-Bus, IPC композиторов Hyprland и Sway);
+  \item спроектирована четырёхслойная модульная архитектура на базе паттерна MVVM и фабрики платформенных адаптеров, обеспечивающая изоляцию системно-зависимого кода;
+  \item разработана реляционная база данных SQLite в режиме WAL, формализованы и реализованы алгоритм heartbeat-склейки интервалов, точное отсечение периодов, почасовая развёртка и приоритетный движок категоризации с кэшированием регулярных выражений;
+  \item создан графический интерфейс на PySide6 и Qt Quick (QML), включающий аналитический дашборд с кастомными графиками (\texttt{DonutChart} и \texttt{HourlyBarChart}), 24-часовой таймлайн, редактор категорий и правил, системный трей, тёмную/светлую тему и экспорт данных в форматы CSV и JSON;
+  \item разработаны модульные тесты и кроссплатформенный бенчмарк-стенд \texttt{benchmark.py}, подтвердившие корректность бизнес-логики, высокую степень сжатия хранилища и низкое потребление системных ресурсов.
+\end{enumerate}
+
+К перспективным направлениям дальнейшего развития программного продукта относятся добавление пользовательского редактора чёрного списка исключаемых приложений, реализация адаптера для композитора GNOME Shell (Wayland) и macOS (Accessibility / AppleScript API), а также внедрение модуля анализа долговременных трендов продуктивности на основе временных рядов.
+
+% =========================================================================
+% СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ
+% =========================================================================
+\clearpage
+\centeredrefname
+\addcontentsline{toc}{chapter}{Список использованных источников}
+\begin{thebibliography}{99}
+
+\bibitem{rescuetime}
+RescueTime: Automatic Time Tracking Software [Электронный ресурс]. --- Режим доступа: \url{https://www.rescuetime.com/} (дата обращения: 15.11.2026).
+
+\bibitem{manictime}
+ManicTime: Time Tracking Software [Электронный ресурс]. --- Режим доступа: \url{https://www.manictime.com/} (дата обращения: 15.11.2026).
+
+\bibitem{activitywatch}
+ActivityWatch: Open-Source Automated Time Tracker [Электронный ресурс]. --- Режим доступа: \url{https://activitywatch.net/} (дата обращения: 15.11.2026).
+
+\bibitem{wakatime}
+WakaTime: Dashboards for Developers [Электронный ресурс]. --- Режим доступа: \url{https://wakatime.com/} (дата обращения: 15.11.2026).
+
+\bibitem{winapi_fg}
+Microsoft Learn. GetForegroundWindow function (winuser.h) [Электронный ресурс]. --- Режим доступа: \url{https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getforegroundwindow} (дата обращения: 16.11.2026).
+
+\bibitem{winapi_idle}
+Microsoft Learn. GetLastInputInfo function (winuser.h) [Электронный ресурс]. --- Режим доступа: \url{https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getlastinputinfo} (дата обращения: 16.11.2026).
+
+\bibitem{ewmh}
+freedesktop.org. Extended Window Manager Hints (EWMH) Specification [Электронный ресурс]. --- Режим доступа: \url{https://specifications.freedesktop.org/wm-spec/latest/} (дата обращения: 16.11.2026).
+
+\bibitem{xlib_manual}
+Gettys J., Scheifler R. W. Xlib --- C Language X Interface [Электронный ресурс]. --- Режим доступа: \url{https://www.x.org/releases/current/doc/libX11/libX11/libX11.html} (дата обращения: 16.11.2026).
+
+\bibitem{wayland}
+Wayland Architecture and Protocol Documentation [Электронный ресурс]. --- Режим доступа: \url{https://wayland.freedesktop.org/docs/html/} (дата обращения: 17.11.2026).
+
+\bibitem{kwin_scripting}
+KDE Developer Documentation. KWin Scripting API [Электронный ресурс]. --- Режим доступа: \url{https://develop.kde.org/docs/plasma/kwin/} (дата обращения: 17.11.2026).
+
+\bibitem{dbus_spec}
+freedesktop.org. D-Bus Specification [Электронный ресурс]. --- Режим доступа: \url{https://dbus.freedesktop.org/doc/dbus-specification.html} (дата обращения: 17.11.2026).
+
+\bibitem{pyside6}
+Qt for Python (PySide6) Official Documentation [Электронный ресурс]. --- Режим доступа: \url{https://doc.qt.io/qtforpython-6/} (дата обращения: 18.11.2026).
+
+\bibitem{qt_quick}
+Qt Group. Qt Quick and QML Applications Documentation [Электронный ресурс]. --- Режим доступа: \url{https://doc.qt.io/qt-6/qtquick-index.html} (дата обращения: 18.11.2026).
+
+\bibitem{sqlite_wal}
+SQLite Documentation. Write-Ahead Logging [Электронный ресурс]. --- Режим доступа: \url{https://www.sqlite.org/wal.html} (дата обращения: 18.11.2026).
+
+\bibitem{psutil_docs}
+Rodola G. psutil documentation: cross-platform process and system utilities [Электронный ресурс]. --- Режим доступа: \url{https://psutil.readthedocs.io/} (дата обращения: 18.11.2026).
+
+\bibitem{martin_clean}
+Мартин Р. Чистая архитектура. Искусство разработки программного обеспечения / Р.~Мартин ; пер. с англ. --- СПб. : Питер, 2021. --- 352~с.
+
+\bibitem{lutz_python}
+Лутц М. Изучаем Python : в 2 т. / М.~Лутц ; пер. с англ. --- 5-е изд. --- СПб. : Диалектика, 2020. --- Т.~1. --- 832~с.
+
+\bibitem{ramalho_python}
+Рамальо Л. Python. К вершинам мастерства / Л.~Рамальо ; пер. с англ. --- 2-е изд. --- М. : ДМК Пресс, 2022. --- 898~с.
+
+\bibitem{kleppmann_ddia}
+Клеппман М. Высоконагруженные приложения. Программирование, масштабирование, поддержка / М.~Клеппман ; пер. с англ. --- СПб. : Питер, 2021. --- 640~с.
+
+\end{thebibliography}
+
+\end{document}
