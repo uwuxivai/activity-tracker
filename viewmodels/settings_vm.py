@@ -14,6 +14,7 @@ class SettingsVM(QObject):
     exportStatusChanged = Signal()
     pauseChanged = Signal(bool)
     quittingChanged = Signal()
+    databaseReset = Signal()
 
     def __init__(
         self,
@@ -84,6 +85,11 @@ class SettingsVM(QObject):
         except OSError as exc:
             self._export_status = f"Ошибка экспорта: {exc}"
         self.exportStatusChanged.emit()
+
+    @Slot()
+    def resetDatabase(self) -> None:
+        self._db.reset_database()
+        self.databaseReset.emit()
 
     @Property(int, notify=settingsChanged)
     def pollIntervalMs(self) -> int:

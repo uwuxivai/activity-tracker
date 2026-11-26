@@ -102,7 +102,7 @@ class ActivityDatabase:
                 self._conn.execute("PRAGMA synchronous = NORMAL;")
             self._conn.execute("PRAGMA busy_timeout = 5000;")
             self._conn.executescript(_SCHEMA_SQL)
-            self._seed_defaults_if_empty()
+            self._seed_defaults()
             self._conn.commit()
 
     def _seed_defaults(self) -> None:
@@ -530,3 +530,17 @@ class ActivityDatabase:
         }
         out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         return len(events)
+
+    def reset_database(self) -> None:
+        with self._lock:
+            self._conn.execute("DELETE FROM activity_events")
+            self._conn.execute("DELETE FROM rules")
+            self._conn.execute("DELETE FROM categories")
+            try:
+                self._conn.execute("DELETE FROM sqlite_sequence")
+            except sqlite3.OperationalError:
+                pass
+            self._conn.commit()
+            self._conn.execute("VACUUM")
+            self._conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+        self._seed_defaults()

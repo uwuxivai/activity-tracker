@@ -194,6 +194,96 @@ Item {
             }
         }
 
+        Rectangle {
+            Layout.fillWidth: true
+            implicitHeight: dangerCol.implicitHeight + 32
+            radius: 12
+            color: theme.card
+            border.color: theme.danger
+            border.width: 1
+
+            ColumnLayout {
+                id: dangerCol
+                anchors.fill: parent
+                anchors.margins: 16
+                spacing: 10
+
+                Label {
+                    text: "Управление базой данных"
+                    color: theme.danger
+                    font.pixelSize: 15
+                    font.bold: true
+                }
+
+                Label {
+                    text: "Удалит всю историю активности и пользовательские правила, вернув стандартные категории АПК."
+                    color: theme.muted
+                    font.pixelSize: 12
+                    wrapMode: Text.WordWrap
+                    Layout.fillWidth: true
+                }
+
+                Button {
+                    text: "Удалить базу данных"
+                    onClicked: resetDbDialog.open()
+
+                    background: Rectangle {
+                        radius: 8
+                        color: parent.hovered ? Qt.darker(theme.danger, 1.15) : theme.danger
+                    }
+                    contentItem: Label {
+                        text: parent.text
+                        color: "#ffffff"
+                        font.pixelSize: 13
+                        font.bold: true
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: 14
+                        rightPadding: 14
+                        topPadding: 8
+                        bottomPadding: 8
+                    }
+                }
+            }
+        }
+
         Item { Layout.fillHeight: true }
+    }
+
+    Dialog {
+        id: resetDbDialog
+        parent: Overlay.overlay
+        anchors.centerIn: parent
+        width: 380
+        modal: true
+        title: "Подтверждение удаления"
+        standardButtons: Dialog.Yes | Dialog.Cancel
+
+        background: Rectangle {
+            radius: 12
+            color: theme.card
+            border.color: theme.border
+            border.width: 1
+        }
+
+        header: Label {
+            text: resetDbDialog.title
+            color: theme.text
+            font.pixelSize: 16
+            font.bold: true
+            padding: 16
+            bottomPadding: 6
+        }
+
+        contentItem: Label {
+            text: "Все сохранённые записи активности и правила будут безвозвратно удалены. Продолжить?"
+            color: theme.muted
+            font.pixelSize: 13
+            wrapMode: Text.WordWrap
+            leftPadding: 16
+            rightPadding: 16
+        }
+
+        onAccepted: settingsVM.resetDatabase()
     }
 }

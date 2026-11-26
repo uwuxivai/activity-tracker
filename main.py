@@ -109,6 +109,12 @@ def main() -> int:
         act_pause.setText("Возобновить трекинг" if paused else "Приостановить трекинг")
         tray.setToolTip("Activity Tracker (Пауза)" if paused else "Activity Tracker — активен")
 
+    def on_database_reset() -> None:
+        tracker.reload_rules()
+        rules_vm.reload()
+        dashboard_vm.refresh()
+        settings_vm.databaseReset.connect(on_database_reset)
+
     act_show.triggered.connect(show_window)
     act_pause.triggered.connect(settings_vm.togglePause)
     act_quit.triggered.connect(quit_app)
