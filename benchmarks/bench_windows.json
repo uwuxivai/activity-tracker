@@ -1,0 +1,68 @@
+{
+  "system": {
+    "os": "Windows-11-10.0.26300-SP0",
+    "python": "3.14.7",
+    "cpu_count_logical": 12,
+    "ram_total_gb": 15.93
+  },
+  "live_polling": {
+    "adapter_name": "Windows (WinAPI)",
+    "duration_sec": 30.01,
+    "interval_sec": 1.0,
+    "samples": 30,
+    "poll_avg_ms": 0.16,
+    "poll_p95_ms": 0.323,
+    "poll_max_ms": 0.414,
+    "cpu_avg_percent": 0.0,
+    "cpu_peak_percent": 0.0,
+    "ram_avg_mb": 26.26,
+    "ram_peak_mb": 26.3
+  },
+  "storage_compression": {
+    "simulated_days": 30,
+    "total_ticks": 864000,
+    "naive_rows": 864000,
+    "merged_rows": 6066,
+    "row_compression_ratio": 142.43,
+    "naive_db_size_mb": 113.27,
+    "merged_db_size_mb": 0.84,
+    "size_reduction_percent": 99.26,
+    "merged_write_ticks_per_sec": 32926703.8
+  },
+  "query_latencies": [
+    {
+      "query_name": "Агрегация по категориям (1 день)",
+      "runs": 50,
+      "avg_ms": 0.79,
+      "p95_ms": 0.866,
+      "max_ms": 0.992
+    },
+    {
+      "query_name": "Топ-10 приложений (7 дней)",
+      "runs": 50,
+      "avg_ms": 0.655,
+      "p95_ms": 0.741,
+      "max_ms": 0.837
+    },
+    {
+      "query_name": "Сводка по категориям (30 дней)",
+      "runs": 50,
+      "avg_ms": 1.36,
+      "p95_ms": 1.592,
+      "max_ms": 1.865
+    },
+    {
+      "query_name": "Выборка ленты таймлайна (1 день)",
+      "runs": 50,
+      "avg_ms": 0.473,
+      "p95_ms": 0.583,
+      "max_ms": 0.66
+    }
+  ],
+  "categorizer": {
+    "events_count": 10000,
+    "rules_count": 25,
+    "total_ms": 51.32,
+    "events_per_sec": 194851.6
+  }
+}

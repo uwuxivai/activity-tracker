@@ -55,23 +55,31 @@ CREATE INDEX IF NOT EXISTS idx_events_afk ON activity_events(is_afk, start_ts);
 CREATE INDEX IF NOT EXISTS idx_rules_priority ON rules(priority, id);
 """
 
-_DEFAULT_CATEGORIES: list[tuple[str, str, int]] = [
-    ("Разработка", "#3b82f6", 1),
-    ("Учёба и документы", "#10b981", 1),
-    ("Коммуникация", "#f59e0b", 0),
-    ("Веб-сёрфинг", "#8b5cf6", 0),
-    ("Развлечения", "#ef4444", -1),
+DEFAULT_CATEGORIES: list[tuple[str, str, int]] = [
+    ("Учёт и ERP", "#38bdf8", 1),
+    ("ГИС и точное земледелие", "#34d399", 1),
+    ("ФГИС и госсистемы АПК", "#818cf8", 1),
+    ("Документооборот и связь", "#fbbf24", 0),
+    ("Отвлечения", "#f87171", -1),
+    ("Без категории", "#6b7280", 0),
 ]
 
-_DEFAULT_RULES: list[tuple[str, str, str, bool, int]] = [
-    ("Разработка", r"github|gitlab|stackoverflow|docs\.python|doc\.qt\.io\.exe", "window_title", True, 20),
-    ("Учёба и документы", r"overleaf|google docs|wikipedia|coursera|курс|лабораторн", "window_title", True, 25),
-    ("Развлечения", r"youtube|twitch|netflix|tiktok|reddit|vk\s*видео|кинопоиск", "window_title", True, 20),
-    ("Разработка", r"code|pycharm|idea|clion|cursor|qtcreator|nvim|vim|terminal|konsole|alacritty|wt\.exe|powershell|cmd\.exe|bash|zsh", "app_name", True, 50),
-    ("Учёба и документы", r"winword|excel|powerpnt|soffice|libreoffice|texstudio|obsidian|notion|okular|evince|acrobat", "app_name", True, 60),
-    ("Коммуникация", r"telegram|discord|slack|teams|zoom|thunderbird|outlook", "app_name", True, 70),
-    ("Развлечения", r"steam|dota|cs2|spotify|vlc", "app_name", True, 80),
-    ("Веб-сёрфинг", r"chrome|firefox|msedge|brave|opera|chromium|vivaldi|yandex", "app_name", True, 200),
+DEFAULT_RULES: list[tuple[str, str, int, int, str]] = [
+    (r"^(1cv8|1cv8c|1cv8s)(\.exe)?$", "app_name", 1, 100, "Учёт и ERP"),
+    (r"^(excel|scalc|et)(\.exe)?$", "app_name", 1, 90, "Учёт и ERP"),
+    (r"(1с:предприятие|1с:агрокомплекс|1с:бухгалтерия|сводка|ведомость|урожайность)", "window_title", 1, 85, "Учёт и ERP"),
+
+    (r"^(qgis|qgis-bin|qgis-ltr-bin|arcgispro|nextgis)(\.exe)?$", "app_name", 1, 100, "ГИС и точное земледелие"),
+    (r"(агросигнал|agrosignal|cropio|exactfarming|агромон|agromon|история\s*поля|historyfield|ndvi|карта\s*полей)", "window_title", 1, 95, "ГИС и точное земледелие"),
+
+    (r"(фгис\s*[«\"]?зерно|фгис\s*[«\"]?сатурн|меркурий|ветис|ефис\s*зсн|фгис\s*семеноводство|госуслуги|минсельхоз)", "window_title", 1, 98, "ФГИС и госсистемы АПК"),
+
+    (r"^(winword|swriter|soffice\.bin|okular|evince|acrobat|acrord32)(\.exe)?$", "app_name", 1, 70, "Документооборот и связь"),
+    (r"^(thunderbird|outlook|telegram|telegram-desktop|mattermost|yandex-telemost/max)(\.exe)?$", "app_name", 1, 65, "Документооборот и связь"),
+    (r"(диадок|сбис|почта|mail\.ru|яндекс\.почта|max\.ru|\.(docx|odt|pdf|xlsx|ods))", "window_title", 1, 60, "Документооборот и связь"),
+
+    (r"(youtube|vk\.com|вконтакте|twitch|rutube|kinopoisk|pikabu|ok\.ru)", "window_title", 1, 96, "Отвлечения"),
+    (r"^(steam|epicgameslauncher|discord)(\.exe)?$", "app_name", 1, 92, "Отвлечения"),
 ]
 
 
@@ -97,29 +105,33 @@ class ActivityDatabase:
             self._seed_defaults_if_empty()
             self._conn.commit()
 
-    def _seed_defaults_if_empty(self) -> None:
-        count = self._conn.execute("SELECT COUNT(*) FROM categories").fetchone()[0]
-        if count > 0:
-            return
+    def _seed_defaults(self) -> None:
+        with self._lock:
+            cur = self._conn.cursor()
+            count = cur.execute("SELECT COUNT(*) FROM categories").fetchone()[0]
+            if count > 0:
+                return
 
-        cat_ids: dict[str, int] = {}
-        for name, color, prod in _DEFAULT_CATEGORIES:
-            cur = self._conn.execute(
-                "INSERT INTO categories (name, color, productivity) VALUES (?, ?, ?)",
-                (name, color, prod),
+            cur.executemany(
+                "INSERT INTO categories(name, color, productivity) VALUES (?, ?, ?)",
+                DEFAULT_CATEGORIES,
             )
-            cat_ids[name] = int(cur.lastrowid)
-
-        for cat_name, pattern, field, is_regex, priority in _DEFAULT_RULES:
-            cid = cat_ids.get(cat_name)
-            if cid is not None:
-                self._conn.execute(
-                    """
-                    INSERT INTO rules (pattern, match_field, is_regex, priority, category_id)
-                    VALUES (?, ?, ?, ?, ?)
-                    """,
-                    (pattern, field, int(is_regex), priority, cid),
-                )
+            cat_map = {
+                row[1]: row[0]
+                for row in cur.execute("SELECT id, name FROM categories").fetchall()
+            }
+            cur.executemany(
+                """
+                INSERT INTO rules(pattern, match_field, is_regex, priority, category_id)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                [
+                    (pat, field, is_re, prio, cat_map[cat_name])
+                    for pat, field, is_re, prio, cat_name in DEFAULT_RULES
+                    if cat_name in cat_map
+                ],
+            )
+            self._conn.commit()
 
     def close(self) -> None:
         with self._lock:
