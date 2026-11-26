@@ -1,0 +1,68 @@
+{
+  "system": {
+    "os": "Linux-7.3.4-arch1-2-x86_64-with-glibc2.44",
+    "python": "3.14.10",
+    "cpu_count_logical": 12,
+    "ram_total_gb": 13.52
+  },
+  "live_polling": {
+    "adapter_name": "Linux (Wayland / kwin)",
+    "duration_sec": 30.01,
+    "interval_sec": 1.0,
+    "samples": 30,
+    "poll_avg_ms": 1.119,
+    "poll_p95_ms": 3.056,
+    "poll_max_ms": 3.223,
+    "cpu_avg_percent": 0.14,
+    "cpu_peak_percent": 1.0,
+    "ram_avg_mb": 46.43,
+    "ram_peak_mb": 46.45
+  },
+  "storage_compression": {
+    "simulated_days": 30,
+    "total_ticks": 864000,
+    "naive_rows": 864000,
+    "merged_rows": 6066,
+    "row_compression_ratio": 142.43,
+    "naive_db_size_mb": 127.7,
+    "merged_db_size_mb": 0.94,
+    "size_reduction_percent": 99.27,
+    "merged_write_ticks_per_sec": 15988187.7
+  },
+  "query_latencies": [
+    {
+      "query_name": "Агрегация по категориям (1 день)",
+      "runs": 50,
+      "avg_ms": 1.843,
+      "p95_ms": 1.863,
+      "max_ms": 1.878
+    },
+    {
+      "query_name": "Топ-10 приложений (7 дней)",
+      "runs": 50,
+      "avg_ms": 1.507,
+      "p95_ms": 1.523,
+      "max_ms": 1.525
+    },
+    {
+      "query_name": "Сводка по категориям (30 дней)",
+      "runs": 50,
+      "avg_ms": 3.115,
+      "p95_ms": 3.156,
+      "max_ms": 3.283
+    },
+    {
+      "query_name": "Выборка ленты таймлайна (1 день)",
+      "runs": 50,
+      "avg_ms": 1.022,
+      "p95_ms": 1.036,
+      "max_ms": 1.047
+    }
+  ],
+  "categorizer": {
+    "events_count": 10000,
+    "rules_count": 25,
+    "total_ms": 101.68,
+    "events_per_sec": 98343.4
+  }
+}
